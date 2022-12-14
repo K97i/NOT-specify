@@ -76,7 +76,7 @@ public static partial class Cache
                     if (!SystemProcesses.Contains(rawProcess.ProcessName))
                     {
                         exePath = "Not Found";
-                        Issues.Add($"System Data: Could not get the EXE path of {rawProcess.ProcessName} ({rawProcess.Id})");
+                        Notes.Add($"System Data: Could not get the EXE path of {rawProcess.ProcessName} ({rawProcess.Id})");
                     }
                     else
                     {
@@ -91,7 +91,7 @@ public static partial class Cache
             catch (Win32Exception e)
             {
                 exePath = "null - Win32Exception";
-                Issues.Add($"System Data: Could not get the EXE path of {rawProcess.ProcessName} ({rawProcess.Id})");
+                Notes.Add($"System Data: Could not get the EXE path of {rawProcess.ProcessName} ({rawProcess.Id})");
                 Console.WriteLine(e.GetBaseException());
             }
 
@@ -437,7 +437,7 @@ public static partial class Cache
                 break;
             }
         if (timer.Elapsed > timeout)
-            Issues.Add("Monitor report was not generated before the timeout!");
+            Notes.Add("Monitor report was not generated before the timeout!");
 
         timer.Stop();
         cmd.Close();
@@ -464,7 +464,7 @@ public static partial class Cache
             catch (NullReferenceException)
             {
                 drive.DeviceName = null;
-                Issues.Add($"Could not retrieve device name of drive @ index {diskNumber}");
+                Notes.Add($"Could not retrieve device name of drive @ index {diskNumber}");
             }
             try
             {
@@ -473,7 +473,7 @@ public static partial class Cache
             catch (NullReferenceException)
             {
                 drive.SerialNumber = null;
-                Issues.Add($"Could not retrieve serial number of drive @ index {diskNumber}");
+                Notes.Add($"Could not retrieve serial number of drive @ index {diskNumber}");
             }
 
             drive.DiskNumber = (UInt32)driveWmi["Index"];
@@ -485,7 +485,7 @@ public static partial class Cache
             catch (NullReferenceException)
             {
                 drive.DiskCapacity = null;
-                Issues.Add($"Could not retrieve capacity of drive @ index {diskNumber}");
+                Notes.Add($"Could not retrieve capacity of drive @ index {diskNumber}");
             }
             try
             {
@@ -494,7 +494,7 @@ public static partial class Cache
             catch (NullReferenceException)
             {
                 drive.InstanceId = null;
-                Issues.Add($"Could not retrieve Instance ID of drive @ index {diskNumber}");
+                Notes.Add($"Could not retrieve Instance ID of drive @ index {diskNumber}");
             }
 
             drive.Partitions = new List<Partition>();
@@ -547,7 +547,7 @@ public static partial class Cache
 
                 if (driveIndex == -1)
                 {
-                    Issues.Add($"Smart Data found for {instanceId} with no matching drive. This is a Specify error");
+                    Notes.Add($"Smart Data found for {instanceId} with no matching drive. This is a Specify error");
                     break;
                 }
 
@@ -622,7 +622,7 @@ public static partial class Cache
             }
             catch (NullReferenceException)
             {
-                Issues.Add("Failure to parse partition information - No capacity found. This is likely a virtual or unallocated drive.");
+                Issues.Add("Failure to parse partition information for " + partition + " - No capacity found. This is likely a virtual or unallocated drive.");
                 continue;
             }
 
@@ -695,7 +695,7 @@ public static partial class Cache
                 // Prevent the exception by continuing the loop.
                 if (dIndex == -1 || pIndex == -1)
                 {
-                    Issues.Add($"di/pi = -1 for partition {partitionSize} - this is a Specify error.");
+                    Notes.Add($"di/pi = -1 for partition {partitionSize} - this is a Specify error.");
                     continue;
                 }
                 var matchingPartition = drives[dIndex].Partitions[pIndex];
@@ -710,7 +710,7 @@ public static partial class Cache
                 {
                     matchingPartition.Filesystem = (string)fileSystem;
                 }
-                Issues.Add($"{partitionSize} found. FS: {fileSystem} - DL: {driveLetter}");
+                Notes.Add($"{partitionSize} found. FS: {fileSystem} - DL: {driveLetter}");
             }
             else
             {
@@ -1235,7 +1235,7 @@ public static partial class Cache
             }
 
         if (timer.Elapsed > timeout)
-            Issues.Add("Battery report was not generated before the timeout!");
+            Notes.Add("Battery report was not generated before the timeout!");
 
         timer.Stop();
         cmd.Close();

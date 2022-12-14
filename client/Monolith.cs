@@ -26,6 +26,7 @@ public class Monolith
     public MonolithSecurity Security;
     public MonolithNetwork Network;
     /** For issues with gathering the data itself. No diagnoses based on the info will be made in this program. */
+    public List<string> Notes;
     public List<string> Issues;
 
     public Monolith()
@@ -40,7 +41,8 @@ public class Monolith
         Hardware = new MonolithHardware();
         Security = new MonolithSecurity();
         Network = new MonolithNetwork();
-        Issues = data.Cache.Issues;
+        Notes = Cache.Notes;
+        Issues = Cache.Issues;
     }
 
     public string Serialize()
